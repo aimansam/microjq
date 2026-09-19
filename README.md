@@ -7,6 +7,20 @@ Filter, map, and extract JSON with path expressions. Pipe-friendly, helpful erro
 [![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
+```bash
+$ microjq '.users[].name' <<< '{"users":[{"name":"Alice","age":30},{"name":"Bob","age":25}]}'
+Alice
+Bob
+
+$ microjq '.[]|select(.age>25)' <<< '{"users":[{"name":"Alice","age":30},{"name":"Bob","age":25}]}'
+{"name": "Alice", "age": 30}
+
+$ microjq '.store.book[].price' <<< '{"store":{"book":[{"price":10},{"price":20},{"price":15}]}}'
+[10, 20, 15]
+```
+
+*Real output from microjq — field extraction, filtering, and array projection.*
+
 ## Quickstart
 
 ```bash

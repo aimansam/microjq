@@ -179,10 +179,20 @@ def _join(v, *a):
 def _down(v, *a): return str(v).lower()
 def _up(v, *a): return str(v).upper()
 
-_FUNCS: dict[str, Callable] = {
+def _select(v, *a):
+    if not isinstance(v, list):
+        v = [v]
+    pred = a[0] if a else None
+    if pred is None:
+        return v
+    return [item for item in v if bool(list(pred.eval(item)))]
+
+
+_FUNCTIONS: dict[str, Callable] = {
     "keys": _keys, "length": _len, "sort": _sort, "unique": _uniq,
     "reverse": _rev, "tostring": _ts, "tonumber": _tn,
     "join": _join, "ascii_downcase": _down, "ascii_upcase": _up,
+    "select": _select,
 }
 
 
@@ -264,8 +274,8 @@ class Parser:
             if self.peek() and self.peek()[0] == "LPAREN":
                 return self.call(name)
             # Known built-in function without parens: keys, length, sort, etc.
-            if name in _FUNCS:
-                return Pipe(left, Call(_FUNCS[name], []))
+            if name in _FUNCTIONS:
+                return Pipe(left, Call(_FUNCTIONS[name], []))
             return Pipe(left, Field(name))
 
         # (expr)
@@ -274,6 +284,12 @@ class Parser:
             inner = self.parse()
             self.eat("RPAREN")
             return Pipe(left, inner)
+
+        # comparison: == != < > <= >=
+        if t[0] == "EQ":
+            op = self.eat("EQ")[1]
+            right = self.path()
+            return Pipe(left, Comparator(left, op, right))
 
         # literal
         if t[0] == "NUM":
@@ -315,7 +331,7 @@ class Parser:
                 self.eat("COMMA")
                 args.append(self.path())
         self.eat("RPAREN")
-        f = _FUNCS.get(name)
+        f = _FUNCTIONS.get(name)
         if f is None:
             raise JQError(f"Unknown function: {name}")
         return Pipe(self._dummy_left(), Call(f, args))

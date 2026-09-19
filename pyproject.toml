@@ -1,6 +1,6 @@
 [build-system]
 requires = ["setuptools>=68.0"]
-build-backend = "setuptools.backends._legacy:_Backend"
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "microjq"
@@ -9,4 +9,10 @@ description = "A minimal jq clone in Python for querying JSON from the command l
 readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.9"
-dependencies = {}
+dependencies = []
+
+[tool.setuptools.packages.find]
+include = ["microjq*"]
+
+[project.scripts]
+microjq = "microjq.cli:main"
