@@ -1,5 +1,12 @@
 # microjq
 
+```text
+╔══════════════════════════════╗
+║          MICROJQ             ║
+║  query JSON without friction ║
+╚══════════════════════════════╝
+```
+
 **A minimal jq clone in Python — query JSON from the command line, zero dependencies.**
 
 Filter, map, and extract JSON with path expressions. Pipe-friendly, helpful error messages, and a clear comparison to the real jq. For quick JSON lookups when you don't want to install the full jq binary or deal with its complexity.
