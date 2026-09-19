@@ -1,10 +1,11 @@
 # microjq
 
 ```text
-╔══════════════════════════════╗
-║          MICROJQ             ║
-║  query JSON without friction ║
-╚══════════════════════════════╝
+       {  [  ]  }
+      {  {  }  }
+     <   .  .   >    MICROJQ
+      {  |  |  }     query JSON without friction
+       {______}
 ```
 
 **A minimal jq clone in Python — query JSON from the command line, zero dependencies.**
